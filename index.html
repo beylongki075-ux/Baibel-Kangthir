@@ -1,0 +1,532 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <h1>📖 AKIMI ARON AKITAP</h1>
+    <p>(The New Testament Books)</p>
+  </header>
+
+  <main class="container">
+    <!-- Bible Search Bar -->
+    <div id="searchSection" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; margin: 20px 0; box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2); color: white;">
+      <h2 style="margin-top: 0; text-align: center;">🔍 Bible Search</h2>
+      <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+        <input id="searchInput" type="text" placeholder="Search by keyword or reference (e.g., 'Mathiu 10:13-15', 'Jisu', 'Arnam')" autocomplete="off" style="flex: 1; min-width: 250px; padding: 12px 15px; border: none; border-radius: 5px; font-size: 14px; font-family: inherit;">
+        <button onclick="performSearch()" style="padding: 12px 30px; background: #ff6b9d; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 14px;">Search</button>
+        <button onclick="clearSearch()" style="padding: 12px 30px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 14px;">Clear</button>
+      </div>
+      <div id="resultsContainer" style="display: none; margin-top: 30px;">
+        <div id="resultsHeader" style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 15px; font-weight: bold; color: #333; border-left: 4px solid #667eea;"></div>
+        <div id="loadingSpinner" style="display: none; align-items: center; justify-content: center; gap: 10px; padding: 20px; background: #f0f0f0; border-radius: 5px; margin-bottom: 20px;">
+          <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+          <span>Searching...</span>
+        </div>
+        <div id="resultsList" style="display: grid; gap: 15px;"></div>
+      </div>
+      <style>
+        * { 
+          box-sizing: border-box; 
+          -webkit-text-size-adjust: 100%;
+        }
+        
+        html, body {
+          font-size: 16px;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        #searchSection {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 25px;
+          border-radius: 10px;
+          margin: 20px;
+          box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+          color: white;
+          width: calc(100% - 40px);
+        }
+        
+        #searchSection h2 {
+          margin: 0 0 20px 0;
+          text-align: center;
+          font-size: 28px;
+          line-height: 1.4;
+        }
+        
+        .search-box-flex {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 15px;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        
+        #searchInput {
+          flex: 1;
+          min-width: 100%;
+          padding: 16px 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 18px;
+          font-family: inherit;
+          height: auto;
+          min-height: 50px;
+        }
+        
+        #searchInput:focus {
+          outline: none;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+        
+        .search-btn {
+          padding: 16px 24px;
+          background: #ff6b9d;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          transition: all 0.3s;
+          font-size: 16px;
+          white-space: nowrap;
+          height: auto;
+          min-height: 50px;
+          flex: 1;
+          min-width: 120px;
+        }
+        
+        .search-btn:hover {
+          background: #ff4757;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+        }
+        
+        .search-btn:active {
+          transform: translateY(0);
+        }
+        
+        .clear-btn {
+          background: #ff6b6b;
+        }
+        
+        .clear-btn:hover {
+          background: #ee5a52;
+        }
+        
+        #resultsContainer {
+          display: none;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          padding: 0 20px;
+        }
+        
+        #resultsHeader {
+          background: #f8f9fa;
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          font-weight: bold;
+          color: #333;
+          border-left: 5px solid #667eea;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        
+        #loadingSpinner {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+          padding: 30px 20px;
+          background: #f0f0f0;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          font-size: 16px;
+        }
+        
+        .spinner {
+          width: 24px;
+          height: 24px;
+          border: 3px solid #f3f3f3;
+          border-top: 3px solid #667eea;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        
+        #resultsList {
+          display: grid;
+          gap: 18px;
+          grid-template-columns: 1fr;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .result-item {
+          background: white;
+          border: 2px solid #ddd;
+          border-radius: 10px;
+          padding: 20px;
+          cursor: pointer;
+          transition: all 0.3s;
+          color: #333;
+          display: block;
+          text-align: left;
+        }
+        
+        .result-item:hover {
+          border-color: #667eea;
+          box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+          transform: translateY(-2px);
+        }
+        
+        .result-item:active {
+          transform: translateY(0);
+        }
+        
+        .result-header {
+          font-weight: bold;
+          margin-bottom: 12px;
+          font-size: 18px;
+          line-height: 1.3;
+        }
+        
+        .result-meta {
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 12px;
+          word-wrap: break-word;
+        }
+        
+        .result-text {
+          color: #555;
+          line-height: 1.7;
+          font-size: 16px;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+        
+        .highlight {
+          background: #fff3cd;
+          padding: 2px 5px;
+          border-radius: 3px;
+          font-weight: bold;
+          color: #856404;
+        }
+        
+        .verse-modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.75);
+          z-index: 1000;
+          overflow: auto;
+          padding: 10px;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .verse-modal.active {
+          display: flex;
+        }
+        
+        .verse-content-box {
+          background: white;
+          border-radius: 12px;
+          padding: 25px;
+          max-width: 98%;
+          max-height: 90vh;
+          overflow: auto;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+          position: relative;
+          width: 100%;
+        }
+        
+        .verse-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: #ff6b6b;
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          font-size: 24px;
+          cursor: pointer;
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .verse-close:hover {
+          background: #ee5a52;
+          transform: scale(1.1);
+        }
+        
+        .verse-title {
+          font-size: 22px;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 25px;
+          padding-bottom: 15px;
+          border-bottom: 3px solid #667eea;
+          word-wrap: break-word;
+          line-height: 1.4;
+        }
+        
+        .verse-text {
+          color: #555;
+          line-height: 1.9;
+          font-size: 18px;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+        
+        /* Mobile-first: Extra small screens */
+        @media (max-width: 480px) {
+          #searchSection {
+            padding: 20px;
+            margin: 15px;
+            width: calc(100% - 30px);
+          }
+          
+          #searchSection h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+          }
+          
+          .search-box-flex {
+            flex-direction: column;
+            gap: 10px;
+          }
+          
+          #searchInput {
+            min-width: 100%;
+            font-size: 18px;
+            padding: 15px 12px;
+            min-height: 48px;
+          }
+          
+          .search-btn {
+            width: 100%;
+            font-size: 16px;
+            padding: 15px 12px;
+            min-height: 48px;
+          }
+          
+          #resultsContainer {
+            padding: 0 15px;
+          }
+          
+          .result-item {
+            padding: 18px;
+            margin-bottom: 5px;
+          }
+          
+          .result-header {
+            font-size: 17px;
+          }
+          
+          .result-text {
+            font-size: 15px;
+          }
+          
+          .verse-content-box {
+            padding: 20px;
+            max-height: 92vh;
+          }
+          
+          .verse-title {
+            font-size: 20px;
+          }
+          
+          .verse-text {
+            font-size: 17px;
+          }
+        }
+        
+        /* Small screens and tablets */
+        @media (min-width: 481px) and (max-width: 768px) {
+          #searchSection {
+            padding: 22px;
+            margin: 18px;
+            width: calc(100% - 36px);
+          }
+          
+          #searchSection h2 {
+            font-size: 26px;
+          }
+          
+          .search-box-flex {
+            flex-direction: row;
+            justify-content: space-between;
+          }
+          
+          #searchInput {
+            flex: 1;
+            font-size: 17px;
+            min-height: 50px;
+          }
+          
+          .search-btn {
+            flex: 0 1 auto;
+            min-width: 130px;
+            font-size: 15px;
+            min-height: 50px;
+          }
+          
+          .result-item {
+            padding: 18px;
+          }
+          
+          .result-header {
+            font-size: 17px;
+          }
+          
+          .result-text {
+            font-size: 15px;
+          }
+          
+          .verse-content-box {
+            max-width: 90%;
+            padding: 28px;
+          }
+          
+          .verse-title {
+            font-size: 21px;
+          }
+          
+          .verse-text {
+            font-size: 17px;
+          }
+        }
+        
+        /* Larger tablets and desktops */
+        @media (min-width: 769px) {
+          #searchSection {
+            max-width: 900px;
+            margin: 25px auto;
+          }
+          
+          .search-box-flex {
+            flex-direction: row;
+          }
+          
+          #searchInput {
+            min-width: 300px;
+            flex: 1;
+          }
+          
+          .search-btn {
+            flex: 0 1 auto;
+            min-width: 140px;
+          }
+          
+          #resultsList {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+          }
+          
+          .verse-content-box {
+            max-width: 850px;
+            padding: 35px;
+            max-height: 80vh;
+          }
+          
+          .verse-title {
+            font-size: 24px;
+          }
+          
+          .verse-text {
+            font-size: 18px;
+          }
+        }
+      </style>
+    </div>
+
+    <!-- Verse Viewer Modal -->
+    <div id="verseModal" class="verse-modal">
+      <div class="verse-content-box">
+        <button class="verse-close" onclick="closeVerseModal()">×</button>
+        <div class="verse-title" id="verseTitle"></div>
+        <div class="verse-text" id="verseContent"></div>
+      </div>
+    </div>
+
+<div class="section">
+  <button class="section-btn"onclick="window.location.href='Aron.html'"> ANGDENG KEJONG</button>
+</div>
+
+
+
+    <!-- Section 1 -->
+    <div class="section">
+      <button class="section-btn">1. Birta Keme akido (The Gospels)</button>
+      <div class="chapter-list">
+        <button class="section-btn"onclick="window.location.href='Mathiu.html'">
+          • Mathiu ketok aBirta Keme – Matthew</button>
+        <button class="section-btn" onclick="window.location.href='Mark.html'">• Mark ketok aBirta Keme – Mark</button>
+        <button class="section-btn" onclick="window.location.href='Luk.html'">• Luk ketok aBirta Keme – Luke</button>
+        <button class="section-btn" onclick="window.location.href='John.html'">• John ketok aBirta Keme – John</button>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <button class="section-btn">2. Phurkimo akitap (Historical Book)</button>
+      <div class="chapter-list">
+        <button class="section-btn" onclick="window.location.href='Phurkimo.html'">• Ketoitang atum akam akitap – The Acts of the Apostles</button>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <button class="section-btn" onclick="window.location.href='Sangho.html'">3. Sangho atum akido (The Letters of the Apostles)</button>
+      </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+      <button class="section-btn">Anut kaprek asangho atum akido (The Catholic Letters)</button>
+      <div class="chapter-list">
+        <button class="section-btn" onclick="window.location.href='Jakob.html'">• Jakob akido -- James</button>
+        <button class="section-btn" onclick="window.location.href='Pitor.htm'">• Pitor akido 1 -- Peter</button>
+        <button class="section-btn" onclick="window.location.href='Pitor2.html'">• Pitor akido 2 -- Peter</button>
+        <button class="section-btn" onclick="window.location.href='John1,2&3.html'">• John akido 1,2 & 3 -- John</button>
+        <button class="section-btn" onclick="window.location.href='Jud.html'">• Jud akido -- Jude</button>
+      </div>
+    </div>
+    <div class="section">
+      <button class="section-btn">Kapeklang akitap</button>
+      <div class="chapter-list">
+        <p>• Revelation</p>
+    </div>
+     <!--section 6-->
+    <div class="section">
+      <button class="section-btn">Music</button>
+      
+<br><br><br><br><br><br><br><br>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Bible Book App</p>
+  </footer>
+
+  <script src="bible-search.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
