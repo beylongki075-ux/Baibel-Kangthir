@@ -1,3 +1,53 @@
+
+/* Layout: home on left, nav on right */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Container for right-side buttons */
+.right-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Base button styles */
+.controls button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Home button (white) */
+#homeBtn {
+    background: #ffffff;
+    color: var(--accent);
+    border: 1px solid rgba(48,121,255,0.3);
+}
+
+/* Back + Next buttons (blue) */
+#backBtn,
+#nextBtn {
+    background: var(--accent);
+    color: #ffffff;       /* white text */
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Hover */
+.controls button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(48,121,255,0.25);
+}
+
+
+
+
 /* Layout: Home left, Back+Next right */
 .controls {
     display: flex;
