@@ -198,7 +198,7 @@ footer{
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   #pagination {
     flex-direction: row;
     flex-wrap: wrap;
@@ -207,7 +207,7 @@ footer{
 
   #pagination button {
     padding: 5px 8px;
-    font-size: 12px;
+    font-size: 20px;
   }
 
   .page {
@@ -223,3 +223,4 @@ main { max-width: 1100px; margin: 0 auto; }
 
 /* When using the .grid on Sangho.html, wrap it for consistent gutters */
 .grid { padding: 6px; }
+
