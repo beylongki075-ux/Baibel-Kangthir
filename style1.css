@@ -26,7 +26,7 @@
 
 /* Home button (white) */
 #homeBtn {
-    background: #ffffff;
+    background: blue;
     color: var(--accent);
     border: 1px solid rgba(48,121,255,0.3);
 }
@@ -34,7 +34,7 @@
 /* Back + Next buttons (blue) */
 #backBtn,
 #nextBtn {
-    background: var(--accent);
+    background: blue;
     color: #ffffff;       /* white text */
     border: 1px solid rgba(255,255,255,0.3);
 }
@@ -46,56 +46,6 @@
 }
 
 
-
-
-/* Layout: Home left, Back+Next right */
-.controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-/* Right-side buttons container */
-.right-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-/* All buttons base style */
-.controls button {
-    padding: 10px 16px;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: 0.18s;
-}
-
-/* HOME BUTTON (left side) */
-#homeBtn {
-    background: rgba(255,255,255,0.7);
-    color: var(--accent);
-    border: 1px solid rgba(48,121,255,0.12);
-}
-
-/* BACK + NEXT (blue) */
-#backBtn, 
-#nextBtn {
-    background: var(--accent);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.25);
-}
-
-/* Hover effects */
-.controls button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(48,121,255,0.32);
-}
-
-.controls button:active {
-    transform: translateY(-1px);
-}
 
 /* Mobile sizing */
 @media (max-width: 668px) {
