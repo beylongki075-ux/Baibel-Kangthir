@@ -1,56 +1,310 @@
 
-/* Layout: home on left, nav on right */
-.controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
+:root{
+    --bg1:#f6f9ff;
+    --bg2:#eef7f9;
+    --accent:#3079ff;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --glass: rgba(255,255,255,0.6);
+    --radius:14px;
+    --shadow: 0 6px 18px rgba(16,24,40,0.08);
+    --glass-shadow: 0 8px 28px rgba(16,24,40,0.09);
 }
 
-/* Container for right-side buttons */
-.right-buttons {
-    display: flex;
-    gap: 10px;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background: linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  padding:28px 32px;
+}
+/* base font sizing (use rems for scalable sizing) */
+html{font-size:16px}
+body{font-size:1rem}
+
+/* Header */
+.site-header{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 22px;
+    background: linear-gradient(90deg, rgba(48,121,255,0.12), rgba(48,121,255,0.04));
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    margin-bottom:28px;
+}
+h1, .brand h1 { font-size: clamp(20px, 3.0vw, 28px); }
+h2 { font-size: clamp(18px, 2.4vw, 22px); margin:0 0 10px }
+p, .card p { font-size: clamp(15px, 2.2vw, 18px); line-height:1.6 }
+.logo{
+  width:64px;height:64px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#63a4ff);
+  color:white;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:20px;box-shadow:var(--glass-shadow);
+}
+.brand h1{margin:0;font-size:20px;letter-spacing:0.2px}
+.lead{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+/* Fluid typography */
+h1, .brand h1 { font-size: clamp(18px, 2.4vw, 24px); }
+h2 { font-size: clamp(16px, 2.0vw, 20px); margin:0 0 10px }
+p, .card p { font-size: clamp(13px, 1.6vw, 15px); }
+
+/* Controls */
+.controls{display:flex;gap:10px}
+.btn{
+    display:inline-block;text-decoration:none;padding:8px 12px;border-radius:10px;
+    background:rgba(255,255,255,0.7);color:var(--accent);font-weight:600;border:1px solid rgba(48,121,255,0.12);
+    transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.btn:active{transform:translateY(-1px)}
+
+/* make controls easier to tap on small screens */
+.controls .btn { padding:10px 14px; }
+
+/* Grid of cards */
+.container{max-width:1100px;margin:0 auto}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  align-items:stretch;
+  margin-bottom:28px;
+}
+.card{
+    border-radius:var(--radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,251,255,0.9));
+    box-shadow:var(--glass-shadow);
+    overflow:hidden;
+    transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s;
+    min-height:120px;
+    display:flex;
+    align-items:stretch;
+}
+.card{ padding: 8px; }
+.card a{display:block;padding:18px 16px;color:inherit;text-decoration:none;width:100%}
+.card h3{margin:0 0 8px;font-size:18px;color:#07203a}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.card .small{margin-top:10px;color:#44535f;font-size:12px}
+
+/* Hover / focus effects */
+  /* (mobile font-size increases moved into media query below) */
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 48px rgba(16,24,40,0.12)}
+.card:focus-within{outline:3px solid rgba(48,121,255,0.12);transform:translateY(-6px)}
+
+/* Responsive tweaks */
+@media (max-width:520px){
+  body{padding:12px}
+  .site-header{flex-direction:column;align-items:flex-start;padding:14px}
+  .controls{width:100%;justify-content:flex-start}
+  .brand h1{font-size:18px}
+  .grid{grid-template-columns: 1fr;gap:12px}
+  .logo{width:52px;height:52px}
+  .card a{padding:14px}
+  /* increase base font-size on small screens for readability */
+  html{font-size:18px}
+  p, .card p { font-size: clamp(16px, 3.4vw, 18px); }
+  .section-btn{font-size:clamp(16px,3.6vw,19px)}
 }
 
-/* Base button styles */
-.controls button {
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
+/* Footer */
+footer{
+    max-width:1100px;margin:0 auto;padding:16px;color:var(--muted);font-size:13px;
+    text-align:center;
+}  
+
+
+
+
+
+
+
+/* Basic page layout */
+.page {
+  display: none;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* Home button (white) */
-#homeBtn {
-    background: blue;
-    color: var(--accent);
-    border: 1px solid rgba(48,121,255,0.3);
+/* Active page visible */
+.page.active {
+  display: block;
 }
 
-/* Back + Next buttons (blue) */
-#backBtn,
-#nextBtn {
-    background: blue;
-    color: #ffffff;       /* white text */
-    border: 1px solid rgba(255,255,255,0.3);
+/* Pagination container */
+#pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 90%;
 }
 
-/* Hover */
-.controls button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 14px rgba(48,121,255,0.25);
+/* Pagination buttons */
+#pagination button {
+  padding: 8px 12px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background 0.2s;
 }
 
-
-
-/* Mobile sizing */
-@media (max-width: 668px) {
-    .controls button {
-        font-size: clamp(16px, 4.5vw, 20px);
-        padding: 14px 22px;
-    }
+/* Active page button */
+#pagination .active-page {
+  background: #007bff;
+  color: #fff;
 }
+
+/* Hover effects */
+#pagination button:hover:not(:disabled) {
+  background: #ccc;
+}
+
+/* Disabled buttons */
+#pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Back & next buttons */
+#backBtn, #nextBtn {
+  padding: 12px 16px;
+  margin: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(16,24,40,0.06);
+  box-shadow: 0 4px 10px rgba(16,24,40,0.04);
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .page {
+    padding: 12px;
+  }
+
+  #pagination button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  #backBtn, #nextBtn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  #pagination {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #pagination button {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .page {
+    padding: 10px;
+  }
+}
+
+/* Small accessibility helpers */
+a.btn, button { -webkit-tap-highlight-color: rgba(0,0,0,0.08); }
+
+/* Ensure main container spacing for Sangho.html pages */
+main { max-width: 1100px; margin: 0 auto; }
+
+/* When using the .grid on Sangho.html, wrap it for consistent gutters */
+.grid { padding: 6px; }
+
+/* --- Home page helpers (map older classes to site theme) --- */
+.header, .header p{width:100%}
+.header{display:flex;flex-direction:column;gap:6px;padding:18px 22px;border-radius:12px;background:linear-gradient(90deg, rgba(48,121,255,0.08), rgba(48,121,255,0.02));box-shadow:var(--shadow);margin-bottom:18px}
+.header h1{margin:0;font-size:clamp(18px,2.4vw,28px)}
+.container{max-width:1100px;margin:0 auto;padding:6px}
+.section{background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(250,251,255,0.85));border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:var(--glass-shadow)}
+.section-btn{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:10px;border:1px solid rgba(48,121,255,0.08);background:#fff;color:var(--accent);font-weight:600;margin-bottom:8px}
+.section-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.chapter-list{padding-left:8px;margin-top:6px}
+.chapter-list .section-btn{background:transparent;border:1px dashed rgba(48,121,255,0.06);color:#07203a;font-weight:500}
+
+/* Footer refinement */
+.footer{max-width:1100px;margin:18px auto;padding:12px;color:var(--muted);text-align:center}
+
+@media (max-width:520px){
+  .section-btn{padding:10px;font-size:15px}
+  .section{padding:10px}
+}
+
+/* --- Visual polish / hero for home --- */
+.site-hero{background:linear-gradient(135deg, rgba(48,121,255,0.12), rgba(99,164,255,0.06));border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
+.site-hero h1{margin:0;font-weight:800;color:#06203a;letter-spacing:0.6px}
+.site-hero p{margin:6px 0 0;color:var(--muted)}
+
+/* nicer section cards */
+.section{transition:transform .18s ease, box-shadow .18s ease}
+.section:hover{transform:translateY(-6px);box-shadow:0 18px 48px rgba(16,24,40,0.08)}
+
+/* Accent CTA */
+.btn.accent{background:linear-gradient(90deg,var(--accent),#63a4ff);color:white;border:none}
+
+/* mini-player (in case present) — moved here for consistent theme */
+#mini-player{position:fixed;left:12px;right:12px;bottom:12px;background:linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,251,255,0.96));border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,0.08);display:flex;align-items:center;justify-content:space-between;padding:10px 12px;gap:12px;z-index:9999}
+#mini-player .mini-left{display:flex;align-items:center;gap:12px}
+#mini-player #mini-play{width:46px;height:46px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700}
+#mini-player .mini-meta{line-height:1}
+#mini-player #mini-title{font-weight:700;color:#07203a}
+#mini-player #mini-sub{color:var(--muted);font-size:12px}
+#mini-player .mini-right .btn{background:transparent;border:1px solid rgba(16,24,40,0.06);padding:8px 10px;border-radius:8px}
+
+/* small tweaks */
+button.section-btn, .section-btn{cursor:pointer}
+
+/* Button icons: book for main sections, dot for chapter items */
+.section-btn{position:relative;display:flex;align-items:center;gap:12px;padding-left:52px}
+.section-btn::before{content:'';position:absolute;left:14px;width:22px;height:22px;background-size:22px 22px;background-repeat:no-repeat}
+.section > .section-btn::before, .site-hero + .container .section:first-child .section-btn::before{ /* main section uses book icon */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233072ff'><path d='M3 5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v14a1 1 0 0 1-1.447.894L13 18l-3.553 1.894A1 1 0 0 1 8 18V5H5a2 2 0 0 0-2 2v12h1V5z'/></svg>");
+}
+.chapter-list .section-btn{padding-left:36px}
+.chapter-list .section-btn::before{left:12px;width:10px;height:10px;background-size:10px 10px;background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' fill='%2307203a'><circle cx='4' cy='4' r='4'/></svg>");}
+
+/* Accordion behavior: hide chapter lists by default (show only section titles) */
+.chapter-list{display:none;margin-top:8px}
+.section.open .chapter-list{display:block}
+
+/* visual caret on section buttons that have chapter lists */
+.section-btn[aria-haspopup="true"]{position:relative}
+.section-btn[aria-haspopup="true"]::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)}
+.section.open > .section-btn[aria-haspopup="true"]::after{transform:translateY(-50%) rotate(180deg)}
+
+/* Slightly larger clickable targets on mobile */
+@media (max-width:520px){
+  .section-btn{padding-left:46px}
+  .section-btn::before{left:12px}
+  .chapter-list .section-btn{padding-left:34px}
+}
+
+/* subtle gradient behind page */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 10%, rgba(48,121,255,0.03), transparent 12%), radial-gradient(circle at 90% 90%, rgba(99,164,255,0.02), transparent 12%);}
+
+/* Playlist styles (boxes + inline list) */
+/* playlist styles removed */
+
